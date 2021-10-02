@@ -9,6 +9,7 @@ from json import dump
 import hmac
 import hashlib
 import os
+from pr_judge import pr_judge
 
 app = Flask(__name__)
 
@@ -34,12 +35,9 @@ def webhook():
 		if not hmac.compare_digest(signature, "sha1=" + digest):
 			abort(400, "Invalid signature")
 
-		if(request.json['action'] == 'open'):
-			pass
-
-			# request.json['number'] gives the PR number
-
-			# TODO: Check if the PR is valid
+		if(request.json['action'] == 'opened'):
+			pr_judge(int(request.json["number"]))
+			
 			# TODO: Check for the files
 			# TODO: Execute and send the output on discord
 		
